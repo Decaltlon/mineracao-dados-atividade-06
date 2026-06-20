@@ -1,7 +1,12 @@
-# ==========================================
-# TRABALHO 6 - MINERAÇÃO DE DADOS
-# Opção 01: IterativeImputer + HistGradientBoostingRegressor
-# ==========================================
+# ================================================================================ #
+#                         TRABALHO 6 - MINERAÇÃO DE DADOS                          #
+# ================================================================================ #
+# Instituição: UFPA - Campus de Tucuruí                                            #
+# Disciplina: Mineração de Dados            Professor: Dr. Iago Medeiros           #
+# Grupo: Gabriel Batista, Manuela Ferreira, Pamella Roberta e Rafaela Pinto        #
+# Objetivo: Processar dados ausentes de forma nativa e intrínseca via Pipeline.    #
+# Algoritmos: StandardScaler (Grupo 4) + HistGradientBoostingRegressor (Grupo 2).  #
+# ================================================================================ #
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -9,8 +14,9 @@ from sklearn.pipeline import Pipeline
 from sklearn.metrics import mean_absolute_error, r2_score
 
 
-from sklearn.experimental import enable_iterative_imputer
-from sklearn.impute import IterativeImputer
+# [TROCADO] from sklearn.experimental import enable_iterative_imputer
+# [TROCADO] from sklearn.impute import IterativeImputer
+from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import HistGradientBoostingRegressor
 
 print("1. Carregando o conjunto de dados...")
@@ -34,10 +40,16 @@ y = df['income']
 # 3. Divisão em Treino e Teste (80% para treinar, 20% para testar)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# 4. Construção da Pipeline "A Melhor"
-# O imputer usa inteligência para preencher os dados, o regressor faz a previsão final
-pipeline_opcao_01 = Pipeline([
+# 4. Construção da Pipeline
+# [TROCADO] O imputer usa inteligência para preencher os dados, o regressor faz a previsão final
+'''pipeline_opcao_01 = Pipeline([
     ('imputer', IterativeImputer(random_state=42, max_iter=10)),
+    ('regressor', HistGradientBoostingRegressor(random_state=42))
+])'''
+
+# O scaler preserva os NaNs e o regressor trata as ausências de forma intrínseca
+pipeline_opcao_01 = Pipeline([
+    ('scaler', StandardScaler()),
     ('regressor', HistGradientBoostingRegressor(random_state=42))
 ])
 
